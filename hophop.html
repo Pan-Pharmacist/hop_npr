@@ -1,0 +1,1920 @@
+<!doctype html>
+<html lang="th">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOB by NPR - ระบบจัดการโรคหอบหืดและปอดอุดกั้นเรื้อรัง</title><!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet"><!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"><!-- SDK Scripts -->
+  <!-- SDK scripts removed for production; app will gracefully fallback without them -->
+  <style>
+        * {
+            font-family: 'Sarabun', sans-serif;
+        }
+        
+        body {
+            box-sizing: border-box;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        html {
+            height: 100%;
+        }
+        
+        .main-container {
+            min-height: 100%;
+            background: white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, #1e40af 0%, #1e3a8a 100%);
+            min-height: 100%;
+            padding: 0;
+            box-shadow: 3px 0 15px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 280px;
+            z-index: 1000;
+        }
+        
+        .logo-section {
+            background: rgba(255,255,255,0.15);
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .logo-container {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e40af;
+            letter-spacing: 1px;
+        }
+        
+        .app-title {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        
+        .app-subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+        
+        .nav-pills .nav-link {
+            color: white;
+            border-radius: 0;
+            padding: 1rem 1.5rem;
+            margin: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .nav-pills .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .nav-pills .nav-link.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border-left: 4px solid white;
+        }
+        
+        .nav-icon {
+            font-size: 1.2rem;
+            width: 20px;
+        }
+        
+        .main-content {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100%;
+            margin-left: 280px;
+            padding: 1.5rem;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-width: calc(100vw - 280px);
+            box-sizing: border-box;
+        }
+        
+        .content-header {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 25px rgba(30, 64, 175, 0.15);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1e40af, #1e3a8a, #1d4ed8);
+        }
+        
+        .content-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.3rem;
+        }
+        
+        .content-subtitle {
+            color: #64748b;
+            font-size: 1rem;
+            margin: 0;
+        }
+        
+        .info-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #059669, #047857);
+        }
+        
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .exercise-card {
+            background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15);
+            border: none;
+            transition: all 0.3s ease;
+            height: fit-content;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exercise-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #d97706, #b45309);
+        }
+        
+        .exercise-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(245, 158, 11, 0.3);
+        }
+        
+        .exercise-card:hover::before {
+            height: 6px;
+            background: linear-gradient(90deg, #f59e0b, #d97706, #b45309, #f59e0b);
+            background-size: 200% 100%;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .placeholder-content {
+            background: #f1f5f9;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            color: #64748b;
+            font-style: italic;
+            margin: 0.8rem 0;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .technique-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .technique-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f3e8ff 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .technique-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #7c3aed, #6d28d9);
+        }
+        
+        .technique-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 12px 35px rgba(139, 92, 246, 0.3);
+        }
+        
+        .technique-card:hover::before {
+            height: 6px;
+            background: linear-gradient(90deg, #8b5cf6, #7c3aed, #6d28d9, #8b5cf6);
+            background-size: 200% 100%;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+        
+        .qr-placeholder, .inhaler-placeholder {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            color: #64748b;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .qr-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+        
+        .qr-placeholder-small {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 10px;
+            padding: 0.8rem;
+            text-align: center;
+            color: #1e40af;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .qr-placeholder-small:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .qr-large-container {
+            margin-bottom: 1rem;
+        }
+        
+        .qr-placeholder-large {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 3px solid #1e40af;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            color: #1e40af;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(30, 64, 175, 0.15);
+        }
+        
+        .qr-placeholder-large:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(30, 64, 175, 0.25);
+            border-color: #2563eb;
+        }
+        
+        .content-description {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 100%;
+        }
+        
+        .instruction-list {
+            margin-top: 1rem;
+        }
+        
+        .instruction-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .benefits-section {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-radius: 10px;
+            padding: 1rem;
+            border-left: 4px solid #10b981;
+        }
+        
+        .image-placeholder-container {
+            margin-bottom: 1rem;
+        }
+        
+        .image-placeholder {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            border: 2px dashed #94a3b8;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            color: #64748b;
+            min-height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .image-placeholder:hover {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+            transform: translateY(-2px);
+        }
+        
+        .exercise-description {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 100%;
+        }
+        
+        .disease-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: none;
+            transition: all 0.3s ease;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .disease-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+        
+        .asthma-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ef4444, #dc2626, #b91c1c);
+        }
+        
+        .copd-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #d97706, #b45309);
+        }
+        
+        .disease-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .disease-content h6 {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .disease-content h6:first-child {
+            margin-top: 0;
+        }
+        
+        .comparison-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .comparison-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #2563eb, #1d4ed8);
+        }
+        
+        .inhaler-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .inhaler-placeholder-medium {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .inhaler-placeholder-medium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2);
+        }
+        
+        .medication-info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+        
+        .medication-info-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 0.8rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .medication-info-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+        
+        .medication-info-card h6 {
+            margin-bottom: 0.3rem;
+            color: #92400e;
+            font-weight: 600;
+        }
+        
+        .medication-info-card small {
+            color: #b45309;
+            line-height: 1.3;
+        }
+        
+        .ar-code-spot {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background: #3b82f6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .ar-code-spot:hover {
+            background: #2563eb;
+            transform: scale(1.1);
+        }
+        
+        .medication-form {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-control {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        }
+        
+        .form-control:focus {
+            border-color: #1e40af;
+            box-shadow: 0 0 0 0.2rem rgba(30, 64, 175, 0.25);
+            background: #ffffff;
+            transform: translateY(-1px);
+        }
+        
+        .form-control:hover {
+            border-color: #3b82f6;
+            background: #ffffff;
+        }
+        
+        .tracking-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .tracking-section {
+            background: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+            border: none;
+            height: fit-content;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tracking-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #059669, #047857);
+        }
+        
+        .compliance-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin: 1rem 0;
+        }
+        
+        .table th {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 0.8rem;
+            font-size: 0.9rem;
+            position: relative;
+        }
+        
+        .table th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #f59e0b, #10b981, #06b6d4);
+        }
+        
+        .table td {
+            padding: 0.8rem;
+            vertical-align: middle;
+            border-color: #e2e8f0;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .table tbody tr:hover td {
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        .form-check-input {
+            width: 1.1em;
+            height: 1.1em;
+        }
+        
+        .question-card {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            border-left: 3px solid #06b6d4;
+        }
+        
+        .question-card h6 {
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            border: none;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:disabled {
+            background: linear-gradient(135deg, #94a3b8 0%, #cbd5e0 100%);
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-good { 
+            border: 3px solid #10b981;
+            background: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%);
+        }
+        .result-good::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #059669, #047857);
+        }
+        
+        .result-medium { 
+            border: 3px solid #f59e0b;
+            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+        }
+        .result-medium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #d97706, #b45309);
+        }
+        
+        .result-poor { 
+            border: 3px solid #ef4444;
+            background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+        }
+        .result-poor::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ef4444, #dc2626, #b91c1c);
+        }
+        
+        .loading-spinner {
+            width: 0.9rem;
+            height: 0.9rem;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .custom-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1050;
+        }
+        
+        .alert-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            max-width: 350px;
+            text-align: center;
+        }
+        
+        .about-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .logo-display {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo-display .logo-text {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e40af;
+            letter-spacing: 2px;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .tracking-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .technique-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .exercise-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .tracking-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <!-- Tailwind CDN removed for production to avoid warnings; Bootstrap is used -->
+ </head>
+ <body>
+  <div class="container-fluid main-container">
+   <div class="row g-0"><!-- Sidebar -->
+    <div class="sidebar">
+     <div class="logo-section">
+      <div class="logo-container">
+       <div class="logo-text">
+        HOB
+       </div>
+      </div>
+      <div class="app-title" id="app-title">
+       HOB by NPR
+      </div>
+      <div class="app-subtitle" id="hospital-name">
+       ระบบจัดการโรคทางเดินหายใจ
+      </div>
+     </div>
+     <ul class="nav nav-pills flex-column">
+      <li class="nav-item"><a class="nav-link active" data-bs-toggle="pill" href="#knowledge"> <i class="nav-icon bi bi-book"></i> รู้จักโรคหอบ/ปอดอุดกั้นเรื้อรัง </a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#technique"> <i class="nav-icon bi bi-lungs"></i> เทคนิคการใช้ยาพ่น </a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#tracking"> <i class="nav-icon bi bi-clipboard-data"></i> การบันทึกและประเมินการใช้ยาสูดพ่น </a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#about"> <i class="nav-icon bi bi-info-circle"></i> เกี่ยวกับ HOB by NPR </a></li>
+     </ul>
+    </div><!-- Main Content -->
+    <div class="main-content">
+     <div class="tab-content"><!-- Tab 1: Knowledge -->
+      <div class="tab-pane fade show active" id="knowledge">
+       <div class="content-header">
+        <h1 class="content-title">รู้จักโรคหอบหืด (Asthma) และโรคปอดอุดกั้นเรื้อรัง (COPD)</h1>
+        <p class="content-subtitle" id="welcome-message">ความรู้พื้นฐานเกี่ยวกับโรคทางเดินหายใจที่สำคัญ</p>
+       </div>
+       <div class="info-section">
+        <h3><i class="bi bi-lungs-fill text-primary me-2"></i>ข้อมูลโรคหอบหืดและปอดอุดกั้นเรื้อรัง</h3>
+        <div class="row">
+         <div class="col-md-6">
+          <div class="disease-card asthma-card">
+           <div class="disease-header"><i class="bi bi-lungs text-danger me-2"></i>
+            <h5 class="fw-bold mb-0">โรคหอบหืด (Asthma)</h5>
+           </div>
+           <div class="disease-content">
+            <h6 class="text-danger fw-bold">คำนิยาม</h6>
+            <p class="small">โรคเรื้อรังของหลอดลมที่มีการอักเสบและหดตัว ทำให้หายใจลำบาก</p>
+            <h6 class="text-danger fw-bold">อาการสำคัญ</h6>
+            <ul class="small">
+             <li>หายใจเสียงหวีด (Wheezing)</li>
+             <li>ไอแห้ง โดยเฉพาะตอนกลางคืน</li>
+             <li>หายใจลำบาก หายใจสั้น</li>
+             <li>รู้สึกแน่นหน้าอก</li>
+            </ul>
+            <h6 class="text-danger fw-bold">สิ่งกระตุ้น</h6>
+            <ul class="small mb-0">
+             <li>ฝุ่นละออง ไรฝุ่น</li>
+             <li>ละอองเกสรดอกไม้</li>
+             <li>ควันบุหรี่ กลิ่นแรง</li>
+             <li>อากาศเย็น การออกกำลังกาย</li>
+            </ul>
+           </div>
+          </div>
+         </div>
+         <div class="col-md-6">
+          <div class="disease-card copd-card">
+           <div class="disease-header"><i class="bi bi-lungs text-warning me-2"></i>
+            <h5 class="fw-bold mb-0">โรคปอดอุดกั้นเรื้อรัง (COPD)</h5>
+           </div>
+           <div class="disease-content">
+            <h6 class="text-warning fw-bold">คำนิยาม</h6>
+            <p class="small">โรคปอดเรื้อรังที่มีการอุดกั้นทางเดินหายใจ ไม่สามารถย้อนกลับได้</p>
+            <h6 class="text-warning fw-bold">อาการสำคัญ</h6>
+            <ul class="small">
+             <li>ไอเรื้อรัง มีเสมหะ</li>
+             <li>หายใจลำบากเมื่อออกแรง</li>
+             <li>เหนื่อยง่าย อ่อนเพลีย</li>
+             <li>น้ำหนักลด เบื่ออาหาร</li>
+            </ul>
+            <h6 class="text-warning fw-bold">สาเหตุหลัก</h6>
+            <ul class="small mb-0">
+             <li>การสูบบุหรี่ (สาเหตุ 80-90%)</li>
+             <li>มมลพิษทางอากาศ</li>
+             <li>ฝุ่นละอองในที่ทำงาน</li>
+             <li>พันธุกรรม</li>
+            </ul>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="comparison-section mt-4">
+         <h5 class="fw-bold text-primary mb-3"><i class="bi bi-arrow-left-right me-2"></i>ความแตกต่างระหว่าง Asthma และ COPD</h5>
+         <div class="table-responsive">
+          <table class="table table-bordered">
+           <thead class="table-primary">
+            <tr>
+             <th>หัวข้อ</th>
+             <th class="text-center">Asthma</th>
+             <th class="text-center">COPD</th>
+            </tr>
+           </thead>
+           <tbody>
+            <tr>
+             <td class="fw-bold">อายุที่เริ่มป่วย</td>
+             <td class="text-center">เด็ก-วัยรุ่น</td>
+             <td class="text-center">ผู้ใหญ่ (&gt;40 ปี)</td>
+            </tr>
+            <tr>
+             <td class="fw-bold">ลักษณะอาการ</td>
+             <td class="text-center">เป็นๆ หายๆ</td>
+             <td class="text-center">ค่อยๆ แย่ลง</td>
+            </tr>
+            <tr>
+             <td class="fw-bold">การตอบสนองต่อยา</td>
+             <td class="text-center">ดีมาก</td>
+             <td class="text-center">ปานกลาง</td>
+            </tr>
+            <tr>
+             <td class="fw-bold">การย้อนกลับได้</td>
+             <td class="text-center">ได้</td>
+             <td class="text-center">ไม่ได้</td>
+            </tr>
+           </tbody>
+          </table>
+         </div>
+        </div>
+       </div>
+       <div class="content-header">
+        <h2 class="content-title">การออกกำลังการบริหารปอด</h2>
+        <p class="content-subtitle">แบบฝึกหัดเพื่อเสริมสร้างสุขภาพปอดและระบบหายใจ</p>
+       </div>
+       <div class="exercise-grid">
+        <div class="exercise-card">
+         <h4><i class="bi bi-person-arms-up text-warning me-2"></i>การหายใจเข้าด้วยวิธีมณีเวช</h4>
+         <div class="content-description mb-3">
+          <h6 class="fw-bold text-primary mb-3">เทคนิคการหายใจแบบมณีเวช (Diaphragmatic Breathing)</h6>
+          <div class="instruction-list">
+           <div class="instruction-item"><span class="step-number">1</span> <span>นั่งหรือนอนในท่าที่สบาย วางมือหนึ่งบนอก อีกมือหนึ่งบนท้อง</span>
+           </div>
+           <div class="instruction-item"><span class="step-number">2</span> <span>หายใจเข้าช้าๆ ทางจมูก ให้ท้องขยายตัว มือบนอกไม่ขยับ</span>
+           </div>
+           <div class="instruction-item"><span class="step-number">3</span> <span>หายใจออกช้าๆ ทางปาก ให้ท้องยุบลง นับ 1-2-3-4</span>
+           </div>
+           <div class="instruction-item"><span class="step-number">4</span> <span>ทำซ้ำ 5-10 ครั้ง วันละ 2-3 ครั้ง</span>
+           </div>
+          </div>
+         </div>
+         <div class="qr-large-container">
+          <div class="qr-placeholder-large"><img src="./images/qr_mdewech.png" alt="QR Code วิดีโอการหายใจแบบมณีเวช" style="width: 150px; height: 150px; object-fit: contain; margin-bottom: 10px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+           <div style="display: none;"><i class="bi bi-qr-code" style="font-size: 4rem; color: #1e40af;"></i>
+           </div>
+           <h6 class="mt-2 mb-1 fw-bold">QR Code วิดีโอสาธิต</h6><small class="text-muted">สแกนเพื่อดูวิดีโอการหายใจแบบมณีเวช</small>
+          </div>
+         </div>
+        </div>
+        <div class="exercise-card">
+         <h4><i class="bi bi-person-walking text-success me-2"></i>ท่าบริหารแขนและลำตัว</h4>
+         <div class="content-description">
+          <h6 class="fw-bold text-success mb-3">ท่าบริหารแขนและลำตัวสำหรับผู้ป่วยโรคทางเดินหายใจ</h6>
+          <div class="instruction-list">
+           <div class="instruction-item"><span class="step-number">1</span> <span>ยืนตรง เท้าแยกเท่าไหล่ ยกแขนขึ้นข้างบน หายใจเข้า</span>
+           </div>
+           <div class="instruction-item"><span class="step-number">2</span> <span>ลดแขนลงข้างลำตัว หายใจออกช้าๆ ทำ 8-10 ครั้ง</span>
+           </div>
+           <div class="instruction-item"><span class="step-number">3</span> <span>หมุนแขนเป็นวงกลม ไปข้างหน้า 5 ครั้ง ข้างหลัง 5 ครั้ง</span>
+           </div>
+          </div>
+          <div class="alert alert-success small mt-3 mb-0"><i class="bi bi-clock me-2"></i><strong>ความถี่:</strong> วันละ 2-3 ครั้ง เช้า-เย็น
+          </div>
+         </div>
+        </div>
+        <div class="exercise-card">
+         <h4><i class="bi bi-arrow-repeat text-primary me-2"></i>ท่าหมุนไหล่และสะบัก</h4>
+         <div class="content-description">
+          <h6 class="fw-bold text-primary mb-3">ท่าหมุนไหล่และสะบักเพื่อผ่อนคลายกล้ามเนื้อหายใจ</h6>
+          <div class="instruction-list">
+           <div class="instruction-item"><span class="step-number">1</span> <span>นั่งหรือยืนตรง หมุนไหล่ไปข้างหน้า 5 ครั้ง</span>
+           </div>
+           <div class="instruction-item"><span class="step-number">2</span> <span>หมุนไหล่ไปข้างหลัง 5 ครั้ง หายใจสม่ำเสมอ</span>
+           </div>
+           <div class="instruction-item"><span class="step-number">3</span> <span>ยกไหล่ขึ้น กดลง ผ่อนคลายกล้ามเนื้อสะบัก</span>
+           </div>
+          </div>
+          <div class="alert alert-info small mt-3 mb-0"><i class="bi bi-shield-check me-2"></i><strong>ข้อควรระวัง:</strong> ไม่ควรทำแรงเกินไป หยุดหากมีอาการเจ็บ
+          </div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Tab 2: Technique -->
+      <div class="tab-pane fade" id="technique">
+       <div class="content-header">
+        <h1 class="content-title">เทคนิคการใช้ยาพ่น</h1>
+        <p class="content-subtitle">คู่มือการใช้ยาสูดพ่นอย่างถูกต้องและมีประสิทธิภาพ</p>
+       </div><!-- Row 1: MDI -->
+       <div class="row mb-4">
+        <div class="col-md-3">
+         <div class="technique-card">
+          <h6><i class="bi bi-qr-code text-primary me-2"></i>QR Code MDI</h6>
+          <div class="qr-placeholder-small"><img src="./images/MDI.png" alt="QR Code วิดีโอสาธิต MDI" style="width: 80px; height: 80px; object-fit: contain; margin-bottom: 5px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+           <div style="display: none;"><i class="bi bi-qr-code" style="font-size: 2rem; color: #3b82f6;"></i>
+           </div><small>วิดีโอสาธิต MDI</small>
+          </div>
+         </div>
+        </div>
+        <div class="col-md-6">
+         <div class="technique-card">
+          <h6><i class="bi bi-lungs text-success me-2"></i>ภาพยาพ่น MDI</h6>
+          <div class="inhaler-placeholder-medium"><img src="./images/MDI_pic.jpg" alt="ยาพ่น MDI" style="width: 120px; height: 120px; object-fit: contain; margin-bottom: 10px;">
+           <div style="display: none;"><i class="bi bi-lungs" style="font-size: 3rem; color: #3b82f6;"></i>
+           </div><strong>MDI (Metered Dose Inhaler)</strong> <small>ยาพ่นแรงดัน</small>
+          </div>
+         </div>
+        </div>
+        <div class="col-md-3">
+         <div class="technique-card">
+          <h6><i class="bi bi-clipboard-pulse text-info me-2"></i>ข้อมูลยา MDI</h6>
+          <div class="medication-info-card">
+           <h6>MDI</h6><small>ยาพ่นแรงดัน<br>
+            ใช้ร่วมกับ Spacer<br>
+            กดพร้อมสูดช้าๆ</small>
+          </div>
+         </div>
+        </div>
+       </div><!-- Row 2: Accuhaler -->
+       <div class="row mb-4">
+        <div class="col-md-3">
+         <div class="technique-card">
+          <h6><i class="bi bi-qr-code text-primary me-2"></i>QR Code Accuhaler</h6>
+          <div class="qr-placeholder-small"><img src="./images/accuhaler.png" alt="QR Code วิดีโอสาธิต Accuhaler" style="width: 80px; height: 80px; object-fit: contain; margin-bottom: 5px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+           <div style="display: none;"><i class="bi bi-qr-code" style="font-size: 2rem; color: #10b981;"></i>
+           </div><small>วิดีโอสาธิต Accuhaler</small>
+          </div>
+         </div>
+        </div>
+        <div class="col-md-6">
+         <div class="technique-card">
+          <h6><i class="bi bi-lungs text-success me-2"></i>ภาพยาพ่น Accuhaler</h6>
+          <div class="inhaler-placeholder-medium"><img src="./images/pic_accuhaler.png" alt="ยาพ่น Accuhaler" style="width: 120px; height: 120px; object-fit: contain; margin-bottom: 10px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+           <div style="display: none;"><i class="bi bi-disc" style="font-size: 3rem; color: #10b981;"></i>
+           </div><strong>Accuhaler (Dry Powder Inhaler)</strong> <small>ยาผงแห้ง</small>
+          </div>
+         </div>
+        </div>
+        <div class="col-md-3">
+         <div class="technique-card">
+          <h6><i class="bi bi-clipboard-pulse text-info me-2"></i>ข้อมูลยา Accuhaler</h6>
+          <div class="medication-info-card">
+           <h6>Accuhaler</h6><small>ยาผงแห้ง<br>
+            สูดแรงและเร็ว<br>
+            เลื่อนเปิด-ปิด</small>
+          </div>
+         </div>
+        </div>
+       </div><!-- Row 3: Turbuhaler (Spiromax) -->
+       <div class="row mb-4">
+        <div class="col-md-3">
+         <div class="technique-card">
+          <h6><i class="bi bi-qr-code text-primary me-2"></i>QR Code Spiromax</h6>
+          <div class="qr-placeholder-small"><img src="./images/Spiromax.png" alt="QR Code วิดีโอสาธิต Spiromax" style="width: 80px; height: 80px; object-fit: contain; margin-bottom: 5px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+           <div style="display: none;"><i class="bi bi-qr-code" style="font-size: 2rem; color: #06b6d4;"></i>
+           </div><small>วิดีโอสาธิต Spiromax</small>
+          </div>
+         </div>
+        </div>
+        <div class="col-md-6">
+         <div class="technique-card">
+          <h6><i class="bi bi-lungs text-success me-2"></i>ภาพยาพ่น Spiromax</h6>
+          <div class="inhaler-placeholder-medium"><img src="./images/pic_spiromax.jpg" alt="ยาพ่น Spiromax" style="width: 120px; height: 120px; object-fit: contain; margin-bottom: 10px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+           <div style="display: none;"><i class="bi bi-tornado" style="font-size: 3rem; color: #06b6d4;"></i>
+           </div><strong>Spiromax (Dry Powder Inhaler)</strong> <small>ยาผงแห้ง</small>
+          </div>
+         </div>
+        </div>
+        <div class="col-md-3">
+         <div class="technique-card">
+          <h6><i class="bi bi-clipboard-pulse text-info me-2"></i>ข้อมูลยา Spiromax</h6>
+          <div class="medication-info-card">
+           <h6>Spiromax</h6><small>ยาผงแห้ง<br>
+            บิดเปิด-ปิด<br>
+            สูดแรงและลึก</small>
+          </div>
+         </div>
+        </div>
+       </div><!-- Row 4: HandiHaler -->
+       <div class="row mb-4">
+        <div class="col-md-3">
+         <div class="technique-card">
+          <h6><i class="bi bi-qr-code text-primary me-2"></i>QR Code HandiHaler</h6>
+          <div class="qr-placeholder-small"><img src="./images/Handihaler.png" alt="QR Code วิดีโอสาธิต HandiHaler" style="width: 80px; height: 80px; object-fit: contain; margin-bottom: 5px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+           <div style="display: none;"><i class="bi bi-qr-code" style="font-size: 2rem; color: #f59e0b;"></i>
+           </div><small>วิดีโอสาธิต HandiHaler</small>
+          </div>
+         </div>
+        </div>
+        <div class="col-md-6">
+         <div class="technique-card">
+          <h6><i class="bi bi-lungs text-success me-2"></i>ภาพยาพ่น HandiHaler</h6>
+          <div class="inhaler-placeholder-medium"><img src="./images/pic_handihaler.jfif" alt="ยาพ่น HandiHaler" style="width: 120px; height: 120px; object-fit: contain; margin-bottom: 10px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+           <div style="display: none;"><i class="bi bi-droplet" style="font-size: 3rem; color: #f59e0b;"></i>
+           </div><strong>HandiHaler</strong> <small>แคปซูลเจาะ</small>
+          </div>
+         </div>
+        </div>
+        <div class="col-md-3">
+         <div class="technique-card">
+          <h6><i class="bi bi-clipboard-pulse text-info me-2"></i>ข้อมูลยา HandiHaler</h6>
+          <div class="medication-info-card">
+           <h6>HandiHaler</h6><small>แคปซูลเจาะ<br>
+            ใช้ HandiHaler<br>
+            เจาะแคปซูลก่อนสูด</small>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="content-header">
+        <h2 class="content-title">วิธีการใช้ยาพ่นแต่ละประเภท</h2>
+        <p class="content-subtitle">คำแนะนำการใช้งานอย่างละเอียดสำหรับยาพ่นทุกชนิด</p>
+       </div>
+       <div class="technique-grid">
+        <div class="technique-card">
+         <h5><i class="bi bi-capsule text-primary me-2"></i>MDI (Metered Dose Inhaler)</h5>
+         <div class="placeholder-content"><strong>📝 ใส่วิธีการใช้ MDI ที่นี่</strong><br><br>
+           1. ขั้นตอนการเตรียมอุปกรณ์<br>
+           2. วิธีการใช้งานที่ถูกต้อง<br>
+           3. เทคนิคการหายใจ<br>
+           4. ข้อควรระวัง
+         </div>
+        </div>
+        <div class="technique-card">
+         <h5><i class="bi bi-disc text-success me-2"></i>Accuhaler</h5>
+         <div class="placeholder-content"><strong>📝 ใส่วิธีการใช้ Accuhaler ที่นี่</strong><br><br>
+           1. การเปิดและเตรียมอุปกรณ์<br>
+           2. วิธีการโหลดยา<br>
+           3. เทคนิคการสูดยา<br>
+           4. การดูแลรักษา
+         </div>
+        </div>
+        <div class="technique-card">
+         <h5><i class="bi bi-tornado text-info me-2"></i>Spiromax</h5>
+         <div class="placeholder-content"><strong>📝 ใส่วิธีการใช้ Spiromax ที่นี่</strong><br><br>
+           1. การเตรียมและการบิดเปิด<br>
+           2. วิธีการโหลดยาผง<br>
+           3. เทคนิคการสูด<br>
+           4. การตรวจสอบ
+         </div>
+        </div>
+        <div class="technique-card">
+         <h5><i class="bi bi-droplet text-warning me-2"></i>HandiHaler</h5>
+         <div class="placeholder-content"><strong>📝 ใส่วิธีการใช้ HandiHaler ที่นี่</strong><br><br>
+           1. การเตรียมแคปซูล<br>
+           2. วิธีการใส่แคปซูล<br>
+           3. เทคนิคการเจาะและสูด<br>
+           4. การทำความสะอาด
+         </div>
+        </div>
+       </div>
+      </div><!-- Tab 3: Tracking -->
+      <div class="tab-pane fade" id="tracking">
+       <div class="content-header">
+        <h1 class="content-title">การบันทึกและประเมินการใช้ยาสูดพ่น</h1>
+        <p class="content-subtitle">ติดตามความสม่ำเสมอและประเมินการควบคุมอาการ</p>
+       </div>
+       <div class="tracking-container"><!-- Compliance Section -->
+        <div class="tracking-section">
+         <h4><i class="bi bi-calendar-check text-primary me-2"></i>ความสม่ำเสมอของการใช้ยา</h4>
+         <div class="mb-3">
+          <div class="row">
+           <div class="col-6"><label class="form-label">ชื่อ</label> <input type="text" class="form-control form-control-sm" id="patient-name" placeholder="ชื่อ">
+           </div>
+           <div class="col-6"><label class="form-label">นามสกุล</label> <input type="text" class="form-control form-control-sm" id="patient-surname" placeholder="นามสกุล">
+           </div>
+          </div>
+         </div>
+         <div class="table-responsive compliance-table">
+          <table class="table table-bordered table-sm">
+           <thead>
+            <tr>
+             <th class="text-center">วัน</th>
+             <th class="text-center">ใช้ยา</th>
+             <th class="text-center">ไม่ได้ใช้</th>
+            </tr>
+           </thead>
+           <tbody>
+            <tr>
+             <td class="fw-bold">จันทร์</td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="monday" value="true" onchange="updateCompliance()"></td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="monday" value="false" onchange="updateCompliance()"></td>
+            </tr>
+            <tr>
+             <td class="fw-bold">อังคาร</td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="tuesday" value="true" onchange="updateCompliance()"></td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="tuesday" value="false" onchange="updateCompliance()"></td>
+            </tr>
+            <tr>
+             <td class="fw-bold">พุธ</td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="wednesday" value="true" onchange="updateCompliance()"></td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="wednesday" value="false" onchange="updateCompliance()"></td>
+            </tr>
+            <tr>
+             <td class="fw-bold">พฤหัสบดี</td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="thursday" value="true" onchange="updateCompliance()"></td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="thursday" value="false" onchange="updateCompliance()"></td>
+            </tr>
+            <tr>
+             <td class="fw-bold">ศุกร์</td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="friday" value="true" onchange="updateCompliance()"></td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="friday" value="false" onchange="updateCompliance()"></td>
+            </tr>
+            <tr>
+             <td class="fw-bold">เสาร์</td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="saturday" value="true" onchange="updateCompliance()"></td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="saturday" value="false" onchange="updateCompliance()"></td>
+            </tr>
+            <tr>
+             <td class="fw-bold">อาทิตย์</td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="sunday" value="true" onchange="updateCompliance()"></td>
+             <td class="text-center"><input class="form-check-input" type="radio" name="sunday" value="false" onchange="updateCompliance()"></td>
+            </tr>
+           </tbody>
+          </table>
+         </div>
+         <div class="text-center"><button class="btn btn-primary" onclick="saveCompliance()" id="save-compliance-btn" disabled> <i class="bi bi-save me-2"></i>บันทึกข้อมูล </button>
+         </div>
+         <div id="compliance-result" class="result-card d-none">
+          <h5><i class="bi bi-graph-up me-2"></i>ผลการประเมิน</h5>
+          <div id="compliance-details"></div>
+         </div>
+        </div><!-- Control Assessment Section -->
+        <div class="tracking-section">
+         <h4><i class="bi bi-clipboard-pulse text-success me-2"></i>การประเมินการควบคุมอาการ</h4>
+         <p class="text-muted small">ตอบคำถามตามสภาพจริงใน 4 สัปดาห์ที่ผ่านมา</p>
+         <div class="question-card">
+          <h6>1. อาการไอ/หอบ/หายใจเสียงหวีดในช่วงกลางวันมากกว่า 2 ครั้ง/สัปดาห์</h6>
+          <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="symptom_q1" value="true" id="q1_yes"> <label class="form-check-label" for="q1_yes">ใช่</label>
+          </div>
+          <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="symptom_q1" value="false" id="q1_no"> <label class="form-check-label" for="q1_no">ไม่ใช่</label>
+          </div>
+         </div>
+         <div class="question-card">
+          <h6>2. อาการไอ/หอบ/หายใจเสียงหวีด ทำให้มีปัญหากับการเล่นหรือทำกิจวัตรประจำวัน</h6>
+          <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="symptom_q2" value="true" id="q2_yes"> <label class="form-check-label" for="q2_yes">ใช่</label>
+          </div>
+          <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="symptom_q2" value="false" id="q2_no"> <label class="form-check-label" for="q2_no">ไม่ใช่</label>
+          </div>
+         </div>
+         <div class="question-card">
+          <h6>3. ต้องลุกขึ้นมาไอ/หอบ/หายใจเสียงหวีดในช่วงกลางคืน</h6>
+          <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="symptom_q3" value="true" id="q3_yes"> <label class="form-check-label" for="q3_yes">ใช่</label>
+          </div>
+          <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="symptom_q3" value="false" id="q3_no"> <label class="form-check-label" for="q3_no">ไม่ใช่</label>
+          </div>
+         </div>
+         <div class="question-card">
+          <h6>4. ต้องใช้ยาขยายหลอดลม (ไม่นับรวมที่ใช้ก่อนการออกกำลังกาย) มากกว่า 2 ครั้ง/สัปดาห์</h6>
+          <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="symptom_q4" value="true" id="q4_yes"> <label class="form-check-label" for="q4_yes">ใช่</label>
+          </div>
+          <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="symptom_q4" value="false" id="q4_no"> <label class="form-check-label" for="q4_no">ไม่ใช่</label>
+          </div>
+         </div>
+         <div class="text-center"><button class="btn btn-primary" onclick="saveControlAssessment()" id="save-control-btn"> <i class="bi bi-clipboard-check me-2"></i>บันทึกผลประเมิน </button>
+         </div>
+         <div id="control-result" class="result-card d-none">
+          <h5><i class="bi bi-heart-pulse me-2"></i>ผลการประเมิน</h5>
+          <div id="control-details"></div>
+         </div>
+        </div>
+       </div>
+      </div><!-- Tab 4: About -->
+      <div class="tab-pane fade" id="about">
+       <div class="about-section">
+        <div class="logo-display">
+         <div class="logo-text">
+          HOB
+         </div>
+        </div>
+        <h1 class="mb-3">HOB by NPR</h1>
+        <h4 class="mb-4">ระบบจัดการโรคทางเดินหายใจ</h4>
+        <p class="lead">แพลตฟอร์มเพื่อให้ความรู้และติดตามการดูแลผู้ป่วยโรค Asthma และ COPD อย่างมีประสิทธิภาพ</p>
+       </div>
+       <div class="row">
+        <div class="col-md-6">
+         <div class="info-section">
+          <h4><i class="bi bi-bullseye text-primary me-2"></i>วัตถุประสงค์</h4>
+          <ul class="list-unstyled">
+           <li><i class="bi bi-check-circle text-success me-2"></i>ให้ความรู้เกี่ยวกับโรคทางเดินหายใจ</li>
+           <li><i class="bi bi-check-circle text-success me-2"></i>สอนเทคนิคการใช้ยาพ่นที่ถูกต้อง</li>
+           <li><i class="bi bi-check-circle text-success me-2"></i>ติดตามความสม่ำเสมอในการใช้ยา</li>
+           <li><i class="bi bi-check-circle text-success me-2"></i>ประเมินการควบคุมอาการ</li>
+          </ul>
+         </div>
+        </div>
+        <div class="col-md-6">
+         <div class="info-section">
+          <h4><i class="bi bi-star text-warning me-2"></i>คุณสมบัติเด่น</h4>
+          <ul class="list-unstyled">
+           <li><i class="bi bi-check-circle text-warning me-2"></i>ระบบบันทึกข้อมูลอัตโนมัติ</li>
+           <li><i class="bi bi-check-circle text-warning me-2"></i>การประเมินผลแบบเรียลไทม์</li>
+           <li><i class="bi bi-check-circle text-warning me-2"></i>อินเทอร์เฟซที่ใช้งานง่าย</li>
+           <li><i class="bi bi-check-circle text-warning me-2"></i>เหมาะสำหรับโรงพยาบาลและคลินิก</li>
+          </ul>
+         </div>
+        </div>
+       </div>
+       <div class="info-section">
+        <h4><i class="bi bi-people text-info me-2"></i>ผู้พัฒนา</h4>
+        <p>พัฒนาโดยทีม NPR เพื่อการดูแลสุขภาพทางเดินหายใจที่ดีขึ้น และเพื่อส่งเสริมการมีส่วนร่วมของผู้ป่วยในการดูแลตนเอง ตามมาตรฐานทางการแพทย์สากล</p>
+        <div class="mt-3 p-3 bg-light rounded">
+         <h5><i class="bi bi-shield-check text-success me-2"></i>ความปลอดภัยของข้อมูล</h5>
+         <p class="mb-0">ข้อมูลทั้งหมดจะถูกเก็บรักษาอย่างปลอดภัยและใช้เพื่อการดูแลรักษาเท่านั้น เราให้ความสำคัญกับความเป็นส่วนตัวของผู้ใช้งานเป็นอย่างสูง</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div><!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+        // Global variables
+        let currentRecordCount = 0;
+        
+        // Default configuration
+        const defaultConfig = {
+            app_title: "HOB by NPR",
+            hospital_name: "ระบบจัดการโรคทางเดินหายใจ",
+            welcome_message: "ยินดีต้อนรับสู่ระบบจัดการโรคทางเดินหายใจ"
+        };
+
+        // Local storage fallback helpers
+        function isLocalStorageAvailable() {
+            try {
+                const testKey = "__hob_test__";
+                window.localStorage.setItem(testKey, "1");
+                window.localStorage.removeItem(testKey);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        function getLocalRecords(key) {
+            if (!isLocalStorageAvailable()) return [];
+            const raw = window.localStorage.getItem(key);
+            try { return raw ? JSON.parse(raw) : []; } catch { return []; }
+        }
+
+        function pushLocalRecord(key, record) {
+            if (!isLocalStorageAvailable()) return { isOk: false };
+            const list = getLocalRecords(key);
+            list.push(record);
+            window.localStorage.setItem(key, JSON.stringify(list));
+            return { isOk: true };
+        }
+
+        // Data handler for SDK
+        const dataHandler = {
+            onDataChanged(data) {
+                currentRecordCount = data.length;
+                console.log(`Current records: ${currentRecordCount}`);
+            }
+        };
+
+        // Initialize SDK
+        async function initializeApp() {
+            if (window.dataSdk) {
+                const initResult = await window.dataSdk.init(dataHandler);
+                if (!initResult.isOk) {
+                    console.error("Failed to initialize data SDK");
+                }
+            } else {
+                // Fallback: initialize record count from localStorage
+                const complianceCount = getLocalRecords('compliance_records').length;
+                const controlCount = getLocalRecords('control_records').length;
+                currentRecordCount = complianceCount + controlCount;
+            }
+
+            if (window.elementSdk) {
+                window.elementSdk.init({
+                    defaultConfig,
+                    onConfigChange: async (config) => {
+                        const appTitle = config.app_title || defaultConfig.app_title;
+                        const hospitalName = config.hospital_name || defaultConfig.hospital_name;
+                        const welcomeMessage = config.welcome_message || defaultConfig.welcome_message;
+                        
+                        document.getElementById('app-title').textContent = appTitle;
+                        document.getElementById('hospital-name').textContent = hospitalName;
+                        document.getElementById('welcome-message').textContent = welcomeMessage;
+                    },
+                    mapToCapabilities: (config) => ({
+                        recolorables: [],
+                        borderables: [],
+                        fontEditable: undefined,
+                        fontSizeable: undefined
+                    }),
+                    mapToEditPanelValues: (config) => new Map([
+                        ["app_title", config.app_title || defaultConfig.app_title],
+                        ["hospital_name", config.hospital_name || defaultConfig.hospital_name],
+                        ["welcome_message", config.welcome_message || defaultConfig.welcome_message]
+                    ])
+                });
+            }
+        }
+
+        // Compliance tracking functions
+        function updateCompliance() {
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            let filledDays = 0;
+            
+            days.forEach(day => {
+                const radios = document.querySelectorAll(`input[name="${day}"]`);
+                const isChecked = Array.from(radios).some(radio => radio.checked);
+                if (isChecked) {
+                    filledDays++;
+                }
+            });
+            
+            const saveBtn = document.getElementById('save-compliance-btn');
+            const patientName = document.getElementById('patient-name').value.trim();
+            const patientSurname = document.getElementById('patient-surname').value.trim();
+            
+            saveBtn.disabled = filledDays < 7 || !patientName || !patientSurname;
+        }
+
+        async function saveCompliance() {
+            if (currentRecordCount >= 999) {
+                showCustomAlert("ถึงขีดจำกัดการบันทึกข้อมูลแล้ว (999 รายการ) กรุณาลบข้อมูลเก่าก่อนเพิ่มใหม่");
+                return;
+            }
+
+            const patientName = document.getElementById('patient-name').value.trim();
+            const patientSurname = document.getElementById('patient-surname').value.trim();
+            
+            if (!patientName || !patientSurname) {
+                showCustomAlert("กรุณากรอกชื่อและนามสกุลให้ครบถ้วน");
+                return;
+            }
+
+            const saveBtn = document.getElementById('save-compliance-btn');
+            const originalHTML = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<div class="d-flex align-items-center"><div class="loading-spinner me-2"></div>กำลังบันทึก...</div>';
+            saveBtn.disabled = true;
+
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            const complianceRecord = {
+                record_type: "compliance",
+                patient_name: patientName,
+                patient_surname: patientSurname,
+                date: new Date().toISOString(),
+                medication_name: document.getElementById('medication-name')?.value || "",
+                inhaler_type: document.getElementById('inhaler-type')?.value || "",
+                notes: document.getElementById('medication-notes')?.value || ""
+            };
+
+            let usedDays = 0;
+            days.forEach(day => {
+                const selectedValue = document.querySelector(`input[name="${day}"]:checked`)?.value;
+                const isUsed = selectedValue === 'true';
+                complianceRecord[day] = isUsed;
+                if (isUsed) usedDays++;
+            });
+
+            const percentage = Math.round((usedDays / 7) * 100);
+            complianceRecord.compliance_percentage = percentage;
+
+            let savedOk = false;
+            if (window.dataSdk) {
+                const result = await window.dataSdk.create(complianceRecord);
+                savedOk = !!(result && result.isOk);
+            } else {
+                const local = pushLocalRecord('compliance_records', complianceRecord);
+                savedOk = !!(local && local.isOk);
+                if (savedOk) currentRecordCount++;
+            }
+
+            if (savedOk) {
+                showComplianceResult(percentage, usedDays, patientName, patientSurname);
+            } else {
+                showCustomAlert("เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง");
+            }
+
+            saveBtn.innerHTML = originalHTML;
+            saveBtn.disabled = false;
+        }
+
+        function showComplianceResult(percentage, usedDays, patientName, patientSurname) {
+            const resultDiv = document.getElementById('compliance-result');
+            const detailsDiv = document.getElementById('compliance-details');
+            
+            let level, message, className, badgeClass, healthAdvice;
+            
+            if (percentage > 80) {
+                level = "Good compliance";
+                message = "🟢 ยินดีด้วย! มีความสม่ำเสมอในการใช้ยาในระดับดีเยี่ยม";
+                className = "result-good";
+                badgeClass = "bg-success";
+                healthAdvice = `
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <h6><i class="bi bi-heart-pulse text-success me-2"></i>คำแนะนำสุขภาพ</h6>
+                        <ul class="mb-0 small">
+                            <li>ให้คงความสม่ำเสมอในการใช้ยาต่อไป</li>
+                            <li>ติดตามอาการและบันทึกผลการใช้ยาเป็นประจำ</li>
+                            <li>หลีกเลี่ยงสิ่งกระตุ้นที่ทำให้เกิดอาการ</li>
+                            <li>ออกกำลังกายสม่ำเสมอตามคำแนะนำของแพทย์</li>
+                            <li>นัดพบแพทย์ตามกำหนดเพื่อประเมินผล</li>
+                        </ul>
+                    </div>
+                `;
+            } else if (percentage >= 60) {
+                level = "Medium compliance";
+                message = "🟡 มีความสม่ำเสมอในระดับปานกลาง ควรปรับปรุง";
+                className = "result-medium";
+                badgeClass = "bg-warning";
+                healthAdvice = `
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <h6><i class="bi bi-exclamation-triangle text-warning me-2"></i>คำแนะนำสุขภาพ</h6>
+                        <ul class="mb-0 small">
+                            <li>ตั้งเตือนเวลาใช้ยาเพื่อไม่ให้ลืม</li>
+                            <li>หาสาเหตุที่ทำให้ลืมใช้ยาและแก้ไข</li>
+                            <li>ปรึกษาแพทย์หากมีผลข้างเคียงจากยา</li>
+                            <li>เรียนรู้เทคนิคการใช้ยาพ่นให้ถูกต้อง</li>
+                            <li>บันทึกอาการและผลการใช้ยาทุกวัน</li>
+                            <li>พบแพทย์เร็วขึ้นหากอาการไม่ดีขึ้น</li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                level = "Poor compliance";
+                message = "🔴 ความสม่ำเสมอต่ำ ต้องปรับปรุงเร่งด่วน";
+                className = "result-poor";
+                badgeClass = "bg-danger";
+                healthAdvice = `
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <h6><i class="bi bi-exclamation-circle text-danger me-2"></i>คำแนะนำสุขภาพ (เร่งด่วน)</h6>
+                        <ul class="mb-0 small">
+                            <li><strong>พบแพทย์โดยเร็ว</strong> เพื่อปรับแผนการรักษา</li>
+                            <li>ใช้แอปพลิเคชันเตือนเวลาใช้ยา</li>
+                            <li>ขอความช่วยเหลือจากครอบครัวในการเตือน</li>
+                            <li>เรียนรู้ความสำคัญของการใช้ยาสม่ำเสมอ</li>
+                            <li>หลีกเลี่ยงสิ่งกระตุ้นอย่างเข้มงวด</li>
+                            <li>เตรียมยาฉุกเฉินไว้ใกล้ตัวเสมอ</li>
+                            <li>ติดตามอาการใกล้ชิดและบันทึกทุกวัน</li>
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            detailsDiv.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>ผู้ป่วย:</strong> ${patientName} ${patientSurname}</p>
+                        <p><strong>ใช้ยา:</strong> ${usedDays}/7 วัน</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>เปอร์เซ็นต์:</strong> <span class="badge ${badgeClass} fs-6">${percentage}%</span></p>
+                        <p><strong>ระดับ:</strong> <span class="fw-bold">${level}</span></p>
+                    </div>
+                </div>
+                <div class="alert alert-info mt-2 mb-0">
+                    <i class="bi bi-info-circle me-2"></i>${message}
+                </div>
+                ${healthAdvice}
+            `;
+            
+            resultDiv.className = `result-card ${className}`;
+            resultDiv.classList.remove('d-none');
+        }
+
+        async function saveControlAssessment() {
+            if (currentRecordCount >= 999) {
+                showCustomAlert("ถึงขีดจำกัดการบันทึกข้อมูลแล้ว (999 รายการ) กรุณาลบข้อมูลเก่าก่อนเพิ่มใหม่");
+                return;
+            }
+
+            const questions = ['symptom_q1', 'symptom_q2', 'symptom_q3', 'symptom_q4'];
+            const answers = {};
+            let positiveSymptoms = 0;
+            let allAnswered = true;
+
+            questions.forEach(q => {
+                const selectedValue = document.querySelector(`input[name="${q}"]:checked`)?.value;
+                if (selectedValue !== undefined) {
+                    const hasSymptom = selectedValue === 'true';
+                    answers[q] = hasSymptom;
+                    if (hasSymptom) positiveSymptoms++;
+                } else {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                showCustomAlert("กรุณาตอบคำถามให้ครบทุกข้อ");
+                return;
+            }
+
+            const saveBtn = document.getElementById('save-control-btn');
+            const originalHTML = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<div class="d-flex align-items-center"><div class="loading-spinner me-2"></div>กำลังบันทึก...</div>';
+            saveBtn.disabled = true;
+
+            let controlLevel;
+            if (positiveSymptoms === 0) {
+                controlLevel = "ควบคุมได้ดี";
+            } else if (positiveSymptoms <= 2) {
+                controlLevel = "ควบคุมได้บ้าง";
+            } else {
+                controlLevel = "ควบคุมไม่ได้";
+            }
+
+            const controlRecord = {
+                record_type: "control_assessment",
+                patient_name: document.getElementById('patient-name')?.value || "ไม่ระบุ",
+                patient_surname: document.getElementById('patient-surname')?.value || "",
+                date: new Date().toISOString(),
+                ...answers,
+                symptom_total: positiveSymptoms,
+                control_level: controlLevel,
+                medication_name: "",
+                inhaler_type: "",
+                notes: ""
+            };
+
+            let savedOk = false;
+            if (window.dataSdk) {
+                const result = await window.dataSdk.create(controlRecord);
+                savedOk = !!(result && result.isOk);
+            } else {
+                const local = pushLocalRecord('control_records', controlRecord);
+                savedOk = !!(local && local.isOk);
+                if (savedOk) currentRecordCount++;
+            }
+
+            if (savedOk) {
+                showControlResult(positiveSymptoms, controlLevel);
+            } else {
+                showCustomAlert("เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง");
+            }
+
+            saveBtn.innerHTML = originalHTML;
+            saveBtn.disabled = false;
+        }
+
+        function showControlResult(positiveSymptoms, controlLevel) {
+            const resultDiv = document.getElementById('control-result');
+            const detailsDiv = document.getElementById('control-details');
+            
+            let message, recommendation, className, badgeClass, detailedAdvice;
+            
+            if (controlLevel === "ควบคุมได้ดี") {
+                message = "🟢 ยินดีด้วย! อาการอยู่ในการควบคุมที่ดีมาก";
+                recommendation = "ให้คงการรักษาปัจจุบันต่อไป ใช้ยาตามแพทย์สั่ง";
+                className = "result-good";
+                badgeClass = "bg-success";
+                detailedAdvice = `
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <h6><i class="bi bi-check-circle text-success me-2"></i>คำแนะนำการปฏิบัติตัว</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="small fw-bold text-success">การใช้ยา</h6>
+                                <ul class="small mb-2">
+                                    <li>ใช้ยาป้องกันตามเวลาที่กำหนด</li>
+                                    <li>เก็บยาฉุกเฉินไว้ใกล้ตัว</li>
+                                    <li>ตรวจสอบวันหมดอายุของยา</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="small fw-bold text-success">การดูแลตนเอง</h6>
+                                <ul class="small mb-2">
+                                    <li>ออกกำลังกายสม่ำเสมอ</li>
+                                    <li>หลีกเลี่ยงสิ่งกระตุ้น</li>
+                                    <li>พักผ่อนให้เพียงพอ</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="alert alert-success small mb-0">
+                            <i class="bi bi-calendar-check me-2"></i><strong>การติดตาม:</strong> นัดพบแพทย์ทุก 3-6 เดือน เพื่อประเมินผลการรักษา
+                        </div>
+                    </div>
+                `;
+            } else if (controlLevel === "ควบคุมได้บ้าง") {
+                message = "🟡 อาการควบคุมได้บางส่วน ยังมีอาการที่ต้องปรับปรุง";
+                recommendation = "ควรปรึกษาแพทย์เพื่อปรับแผนการรักษา";
+                className = "result-medium";
+                badgeClass = "bg-warning";
+                detailedAdvice = `
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <h6><i class="bi bi-exclamation-triangle text-warning me-2"></i>คำแนะนำการปฏิบัติตัว</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="small fw-bold text-warning">ปรับปรุงการใช้ยา</h6>
+                                <ul class="small mb-2">
+                                    <li>ตรวจสอบเทคนิคการใช้ยาพ่น</li>
+                                    <li>ใช้ยาป้องกันให้สม่ำเสมอมากขึ้น</li>
+                                    <li>บันทึกอาการและการใช้ยาทุกวัน</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="small fw-bold text-warning">การดูแลเพิ่มเติม</h6>
+                                <ul class="small mb-2">
+                                    <li>หลีกเลี่ยงสิ่งกระตุ้นอย่างเข้มงวด</li>
+                                    <li>ปรับสภาพแวดล้อมให้เหมาะสม</li>
+                                    <li>เรียนรู้การจัดการความเครียด</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="alert alert-warning small mb-0">
+                            <i class="bi bi-calendar-event me-2"></i><strong>การติดตาม:</strong> นัดพบแพทย์ทุก 1-3 เดือน เพื่อปรับแผนการรักษา
+                        </div>
+                    </div>
+                `;
+            } else {
+                message = "🔴 อาการยังควบคุมไม่ได้ ต้องได้รับการดูแลเร่งด่วน";
+                recommendation = "ควรพบแพทย์โดยเร็วเพื่อปรับแผนการรักษาใหม่";
+                className = "result-poor";
+                badgeClass = "bg-danger";
+                detailedAdvice = `
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <h6><i class="bi bi-exclamation-circle text-danger me-2"></i>คำแนะนำการปฏิบัติตัว (เร่งด่วน)</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="small fw-bold text-danger">การดูแลเร่งด่วน</h6>
+                                <ul class="small mb-2">
+                                    <li><strong>พบแพทย์ทันที</strong> เพื่อปรับยา</li>
+                                    <li>เก็บยาฉุกเฉินไว้ใกล้ตัวเสมอ</li>
+                                    <li>เรียนรู้สัญญาณอันตราย</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="small fw-bold text-danger">การป้องกัน</h6>
+                                <ul class="small mb-2">
+                                    <li>หลีกเลี่ยงสิ่งกระตุ้นทั้งหมด</li>
+                                    <li>ไม่ออกกำลังกายหนักจนกว่าจะควบคุมได้</li>
+                                    <li>มีแผนฉุกเฉินเมื่อมีอาการหนัก</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger small mb-0">
+                            <i class="bi bi-hospital me-2"></i><strong>การติดตาม:</strong> พบแพทย์ทุก 2-4 สัปดาห์ จนกว่าอาการจะควบคุมได้
+                        </div>
+                    </div>
+                `;
+            }
+            
+            detailsDiv.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>อาการที่พบ:</strong> ${positiveSymptoms}/4 อาการ</p>
+                        <p><strong>ระดับการควบคุม:</strong> <span class="badge ${badgeClass} fs-6">${controlLevel}</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-info small mb-0">
+                            <i class="bi bi-info-circle me-2"></i>${message}
+                        </div>
+                    </div>
+                </div>
+                ${detailedAdvice}
+            `;
+            
+            resultDiv.className = `result-card ${className}`;
+            resultDiv.classList.remove('d-none');
+        }
+
+        function showCustomAlert(message) {
+            const alertHTML = `
+                <div class="custom-alert">
+                    <div class="alert-content">
+                        <h5><i class="bi bi-exclamation-triangle text-warning me-2"></i>แจ้งเตือน</h5>
+                        <p class="mb-3">${message}</p>
+                        <button class="btn btn-primary" onclick="this.closest('.custom-alert').remove()">
+                            <i class="bi bi-check me-2"></i>ตกลง
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', alertHTML);
+        }
+
+        // Add event listeners for patient name fields
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            
+            const patientNameField = document.getElementById('patient-name');
+            const patientSurnameField = document.getElementById('patient-surname');
+            
+            if (patientNameField) {
+                patientNameField.addEventListener('input', updateCompliance);
+            }
+            if (patientSurnameField) {
+                patientSurnameField.addEventListener('input', updateCompliance);
+            }
+            
+            // Add event listeners for radio buttons
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', updateCompliance);
+            });
+        });
+ </script>
+ </body>
+
+</html>
+
+
